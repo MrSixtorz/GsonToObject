@@ -4,15 +4,14 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsontoobject.databinding.ActivityMainBinding
-import com.google.gson.Gson
 import kotlinx.coroutines.*
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var direccion: String = "https://swapi.dev/api/people"
     private var direccionPelicula: String = "https://swapi.dev/api/films"
+    private val miClase = MiCLase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +24,13 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val personajeObject: Personaje = getPersonajeFromApi(url)
-                    println("PERSONAJHE: " + personajeObject)
+                    val personajeObject: Personaje = miClase.getPersonajeFromApi(url)
+                    println("PERSONAJE: " + personajeObject)
 
                     withContext(Dispatchers.Main) {
+                        binding.campo1.text = ""
+                        binding.campo2.text = ""
+                        binding.campo3.text = ""
                         binding.campo1.text = personajeObject.name
                         binding.campo2.text = personajeObject.gender
 
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
                                 var movieUrl = "$direccionPelicula/$movieId"
                                 println("Movie URL: " + movieUrl)
-                                var movieData = getMovieFromApi(movieUrl)
+                                var movieData = miClase.getMovieFromApi(movieUrl)
                                 println("SSSSS: " + movieData)
                                 movieNames.add(movieData.title)
                             } else {
@@ -57,18 +59,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun getPersonajeFromApi(url: String): Personaje {
-        return withContext(Dispatchers.IO) {
-            val response = URL(url).readText()
-            Gson().fromJson(response, Personaje::class.java)
-        }
-    }
-
-    private suspend fun getMovieFromApi(url: String): Peliculas {
-        return withContext(Dispatchers.IO) {
-            val response = URL(url).readText()
-            Gson().fromJson(response, Peliculas::class.java)
-        }
-    }
 }
 
