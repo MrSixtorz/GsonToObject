@@ -67,6 +67,21 @@
         android:layout_width="match_parent"
         android:layout_height="24dp" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/CustomProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="gone" />
+
+    <Space
+        android:id="@+id/space5"
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+
     <ScrollView
         android:id="@+id/resultados"
         android:layout_width="match_parent"
